@@ -111,15 +111,18 @@ document.querySelector('.restart').addEventListener('click', new_game)
 function on_click(event) {
     const target = event.target
     const isCell = target.classList.contains('square')
+    let is_result = check_result()
+    console.log(`Is there a result: ${is_result}`)
+    console.log(`Not ${!is_result}`)
 
-    if (isCell) {
+    if (isCell && !is_result) {
         // We have clicked on a square, so now try to make a move there
         console.log(`Human playing in square ${target.dataset.value}`)
         play_move(target)
 
         // Check if there has been a result
         let is_result = check_result()
-        console.log(is_result)
+        console.log(`The player has played and is there a result?: ${is_result}`)
 
         // If the game isn't over then it's the AI's turn
         if (!is_result) {
@@ -141,13 +144,7 @@ function on_click(event) {
  */
 function check_result() {
 
-    // Check for draw
-    if (game.xState.length + game.oState.length === 9) {
-        document.querySelector('.game-over').classList.add('visible')
-        document.querySelector('.game-over-text').textContent = 'draw'
-        return true
-    }
-
+    let is_result = false
     // Check for win
     game.winningStates.forEach(winningState => {
         const xWins = winningState.every(state => game.xState.includes(state))
@@ -158,12 +155,25 @@ function check_result() {
             document.querySelector('.game-over-text').textContent = xWins
                 ? 'you win'
                 : 'i win'
-            return true
+            console.log(`There was a win, returning true`)
+            is_result = true
         }
-
     })
 
-    return false
+    if (is_result) return is_result
+
+    // Check for draw
+    if (game.xState.length + game.oState.length === 9) {
+        document.querySelector('.game-over').classList.add('visible')
+        document.querySelector('.game-over-text').textContent = 'draw'
+        console.log(`There was a draw, returning true`)
+        is_result = true
+    }
+
+    if (is_result) return is_result
+
+    console.log("There was no result")
+    return is_result;
 }
 
 /**
