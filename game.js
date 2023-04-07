@@ -1,5 +1,8 @@
 const ai = await tf.loadLayersModel('model.json');
 
+document.addEventListener('click', on_click)
+document.querySelector('.restart').addEventListener('click', new_game)
+
 // Uncomment this to show the Model Summary in the side of the window
 // tfvis.show.modelSummary({name: "Model Summary"}, ai)
 
@@ -100,9 +103,6 @@ function game2state() {
     console.log(`best move converted is ${converted_best_move}`)
     return converted_best_move
 }
-document.addEventListener('click', on_click)
-
-document.querySelector('.restart').addEventListener('click', new_game)
 
 /**
  * Code that is run when there is a click somewhere on the page
